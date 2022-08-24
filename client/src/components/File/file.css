@@ -1,0 +1,16 @@
+.file{
+    display: flex;
+    width: 500px;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.copy-button{
+    width:90px
+}
+.delete-button{
+    width: 90px;
+}
+
+.no-file-text{
+    text-align: center;
+}
