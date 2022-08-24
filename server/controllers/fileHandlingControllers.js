@@ -1,10 +1,11 @@
 import File from '../models/fileHandlingModel.js';
 import fs from 'fs';
+import { error } from 'console';
 
 export const uploadFile = async (req,res) => {
     try {
         const {filename, path, originalname} = req.file;
-        const {password, user} = req.body;
+        const {user} = req.body;
 
         if(!req.file) return res.status(404).json({error: "Please upload file"});
 
@@ -12,11 +13,8 @@ export const uploadFile = async (req,res) => {
             fileName:filename,
             fileStoredPath: path,
             originalFileName: originalname,
-            user: user
-        }
-
-        if(password){
-            createFileData.password = password;
+            user: user,
+            code: 100000 + Math.floor(Math.random() * 900000)
         }
 
         const fileData = await File.create(createFileData);
@@ -32,17 +30,17 @@ export const uploadFile = async (req,res) => {
 export const downloadFile = async (req,res) => { 
     try {
         
-        const {password} = req.body;
+        const {code} = req.body;
 
         const id = req.params.file_id;
 
         const fileData = await File.findById(id);
 
-        if(fileData.password){
-            if(!password) return res.status(404).json({error: "Please enter the password"});
+        if(fileData.code){
+            if(!code) return res.status(404).json({error: "Please enter the password"});
         }
 
-        if(fileData.password === password){
+        if(fileData.code === code){
 
             res.download(fileData.fileStoredPath, fileData.fileName);
         }else{
@@ -84,9 +82,8 @@ export const deleteFile = async (req,res) => {
         console.log(fileData)
         try {
             fs.unlinkSync(fileData.fileStoredPath);
-            console.log("Deleted from disk")
-        } catch(err) {
-        console.error(err)
+        } catch(error ){
+            console.log(error)
         }
 
         res.json({ message: `Successfully deleted : ${id}` });

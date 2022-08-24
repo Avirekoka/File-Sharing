@@ -8,7 +8,7 @@ function Download() {
 
     const params = useParams();
 
-    const [password, setPassword] = useState('');
+    const [code, setPassword] = useState('');
 
     const handleDownload = async (e) => {
         e.preventDefault();
@@ -18,7 +18,7 @@ function Download() {
                 'Accept': 'application/pdf',
               },
               responseType: 'blob',
-              password
+              code
             })
         .then(response => {
             if(response.status === 200){
@@ -33,7 +33,7 @@ function Download() {
             <form autoComplete="off" onSubmit={(e) => handleDownload(e)} className="download-form">
                 <h1>Download File Here</h1>
                 <div className='form-control'>
-                    <input type="password" value = {password} placeholder="Please enter the file password..." onChange={(e) => setPassword(e.target.value)} required/>
+                    <input type="password" value = {code} placeholder="Please enter the file password..." onChange={(e) => setPassword(e.target.value)} required/>
                 </div>
                 
                 <button>Donwload</button>

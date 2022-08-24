@@ -10,7 +10,7 @@ function Home() {
   const userId = localStorage.getItem("user_id");
   const [files,setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState();
-  const [password, setPassword] = useState('');
+  const [uploadFile, setUploadFile] = useState('');
   
   const navigate = useNavigate();
 
@@ -36,7 +36,6 @@ function Home() {
 
 		formData.append('file', selectedFile);
     formData.append('user', userId);
-    formData.append('password', password);
 
     await axios.post(`http://localhost:5000/file/upload`,formData, {
         headers: {
@@ -50,7 +49,7 @@ function Home() {
           }  
     }).catch(error => console.log(error));
 
-    setPassword('');
+    setUploadFile(!uploadFile);
 
 	};
 
@@ -66,7 +65,7 @@ function Home() {
 
   useEffect(() => {
     getAllFiles();
-  }, [userToken, password]);
+  }, [userToken, uploadFile]);
 
   const handleLogout = (e) => {
     localStorage.clear();
@@ -83,7 +82,7 @@ function Home() {
         <h1 className="upload-heading">Upload File</h1>
         <form onSubmit={(e) => handleUpload(e)} className="upload-form">
           <input required type="file" id="file" name="file" onChange={changeHandler}/>
-          <input required type="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Enter the password of file..."/>
+          
           <button>Upload File</button>
         </form>
       </div>

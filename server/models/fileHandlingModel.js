@@ -13,7 +13,7 @@ const FileSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    password: {
+    code: {
         type: String,
     },
     user : {
